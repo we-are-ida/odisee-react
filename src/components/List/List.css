@@ -1,0 +1,24 @@
+.list {
+    background-color: #c1c1c1;
+    margin: 5px;
+    display: inline-block;
+    width: 50%;
+}
+
+.list .list-item {
+    padding: 5px;
+    border: solid 1px #888;
+    margin: 5px;
+}
+.list .list-item::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.list .list-item .label {
+    float: left;
+}
+.list .list-item .value {
+    float: right;
+}
