@@ -1,0 +1,15 @@
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.button {
+    margin: 1em;
+    cursor: pointer;
+}
+
+.button:hover svg,
+.button.loading svg {
+    animation: spin 1s linear infinite;
+}

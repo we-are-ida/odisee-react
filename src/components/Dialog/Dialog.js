@@ -4,8 +4,14 @@ import Style from "./Dialog.css";
 
 export default class Dialog extends React.Component {
     get info() {
-        if (this.props.data) {
-            return this.props.data.label;
+        const { data } = this.props;
+        if (data) {
+            return (
+                <div className={Style.info}>
+                    <div>{data.label}</div>
+                    <div>{data.value}</div>
+                </div>
+            );
         }
         return "No coin available";
     }

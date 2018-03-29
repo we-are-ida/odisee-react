@@ -1,6 +1,18 @@
 .dialog {
-    padding: 1em;
+    padding: 20px;
     background-color: #fff;
-    margin-bottom: 4em;
+    margin-bottom: 50px;
     box-shadow: 0 0 4px 1px black;
+}
+
+.dialog .info {
+    display: flex;
+}
+
+.dialog .info > * {
+    flex: 1;
+}
+
+.dialog .info > :last-child {
+    flex-grow: 0;
 }

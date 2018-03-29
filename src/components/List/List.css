@@ -9,7 +9,16 @@
     padding: 5px;
     border: solid 1px #888;
     margin: 5px;
+    cursor: pointer;
+    user-select: none;
 }
+
+.list .list-item:hover,
+.list .list-item.active {
+    background-color: #888;
+    color: #fff;
+}
+
 .list .list-item::after {
     content: "";
     display: block;

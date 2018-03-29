@@ -1,0 +1,23 @@
+.header {
+    display: flex;
+    margin: 1em 0;
+    align-items: center;
+}
+
+.header > *,
+.header .currency-select > * {
+    flex: 0 1 auto;
+}
+
+.header > :first-child {
+    flex-grow: 1;
+}
+
+.header .currency-select {
+    display: flex;
+    align-items: center;
+}
+
+.header .currency-select {
+    font-size: 1.2em;
+}
