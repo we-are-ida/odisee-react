@@ -1,10 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../Dialog.css";
+import Style from "./Dialog.css";
 
 export default class Dialog extends React.Component {
+    get info() {
+        if (this.props.data) {
+            return this.props.data.label;
+        }
+        return "No coin available";
+    }
+
     render() {
-        return <div className="dialog">Dialog</div>;
+        return <div className={Style.dialog}>{this.info}</div>;
     }
 }
 
