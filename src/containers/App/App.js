@@ -1,51 +1,87 @@
 import React from "react";
 
+import ApiClient from "../../api-client.js";
+
 import Dialog from "../../components/Dialog/Dialog";
 import Header from "../../components/Header/Header";
 import List from "../ListContainer/ListContainer";
 
-const MOCK_LIST_DATA = [
-    {
-        label: "Bitcoin",
-        value: "$8,524.01",
-    },
-    {
-        label: "Ethereum",
-        value: "$535.17",
-    },
-    {
-        label: "Ripple",
-        value: "$0.691525",
-    },
-    {
-        label: "Bitcoin Cash",
-        value: "$998.62",
-    },
-    {
-        label: "Litecoin",
-        value: "$159.45",
-    },
-];
-
 export default class App extends React.Component {
     state = {
+        data: {
+            loading: false,
+            data: null,
+            error: null,
+            __cache: {
+                currency: null,
+            },
+        },
         selected: null,
         currency: "EUR",
     };
 
     get selected() {
-        const { selected } = this.state;
-        return MOCK_LIST_DATA.find(entry => entry.label === selected);
+        const { selected, data: { data } } = this.state;
+        return data && data.find(entry => entry.label === selected);
+    }
+
+    load(force = false) {
+        const { data: { loading, data, __cache }, currency } = this.state;
+
+        if (loading || (!force && data && currency === __cache.currency)) {
+            // Already loaded or already loading, short circuit
+            return;
+        }
+
+        // Set loading state
+        this.setState({
+            data: {
+                data: null,
+                error: null,
+                loading: true,
+                __cache: {
+                    currency: currency,
+                },
+            },
+        });
+
+        ApiClient.getList(currency)
+            .then(data =>
+                this.setState({
+                    data: {
+                        loading: false,
+                        data,
+                        error: null,
+                        __cache: {
+                            currency,
+                        },
+                    },
+                }),
+            )
+            .catch(error =>
+                this.setState({
+                    data: {
+                        loading: false,
+                        data: null,
+                        error: error.message || error,
+                        __cache: {
+                            currency,
+                        },
+                    },
+                }),
+            );
     }
 
     handleCurrencyChange(currency) {
-        this.setState({
-            currency,
-        });
-
-        if (currency !== this.state.currency) {
-            console.log(`TODO: Reload with ${currency} as currency.`);
-        }
+        // Update the state. Once this is updated =>
+        // Trigger een reload request. De load method zal zelf bepalen of een
+        // api call nodig is.
+        this.setState(
+            {
+                currency,
+            },
+            this.load.bind(this),
+        );
     }
 
     handleSelect(selected) {
@@ -53,30 +89,27 @@ export default class App extends React.Component {
     }
 
     componentWillMount() {
-        console.log("TODO: Do initial data loading!");
+        // Trigger een load verzoek voordat het component in de rendering tree
+        // komt.
+        this.load();
     }
 
     render() {
-        const { currency, selected } = this.state;
+        const { currency, selected, data } = this.state;
         return (
             <div>
                 <Header
                     currency={currency}
                     onCurrencySelect={this.handleCurrencyChange.bind(this)}
-                    onReloadRequest={() =>
-                        console.log("TODO: Trigger a reload")
-                    }
+                    onReloadRequest={() => this.load(true)}
+                    loading={data.loading}
                 >
                     Odisee Crypto
                 </Header>
                 <Dialog data={this.selected} />
                 <List
-                    data={{
-                        data: MOCK_LIST_DATA,
-                        loading: false,
-                        error: null,
-                    }}
-                    onRetry={() => console.log("TODO: Trigger a reload")}
+                    data={data}
+                    onRetry={this.load.bind(this)}
                     onSelect={this.handleSelect.bind(this)}
                     active={selected}
                 />
