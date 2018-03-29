@@ -1,0 +1,11 @@
+# Editors
+/.idea/
+/.vscode/
+
+# Node runtime
+/node_modules/
+yarn-error.log
+package-lock.json
+
+# Build folder
+/dist/
