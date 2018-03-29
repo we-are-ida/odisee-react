@@ -1,6 +1,7 @@
 {
     "env": {
-        "browser": true
+        "browser": true,
+        "jest": true
     },
     "globals": {
         "__API_URL__": true

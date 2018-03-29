@@ -8,4 +8,5 @@ yarn-error.log
 package-lock.json
 
 # Build folder
+/coverage/
 /dist/
