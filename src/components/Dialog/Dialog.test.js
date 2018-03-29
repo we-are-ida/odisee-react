@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, render } from "enzyme";
 
 import Dialog from "./Dialog";
 
@@ -7,7 +7,9 @@ test('Renders "No coin available" when no data is provided', () => {
     // Set assetions count
     expect.assertions(1);
 
-    // TODO: Put a test here
+    expect(render(<Dialog />).text()).toEqual(
+        expect.stringContaining("No coin available"),
+    );
 });
 
 test("Renders label and value when data is provided", () => {
